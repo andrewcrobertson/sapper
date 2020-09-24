@@ -1,0 +1,50 @@
+name: Build and Deploy
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.3.1
+        with:
+          persist-credentials: false
+
+      - name: Install and Build 🔧
+        run: |
+          npm install
+          npm run export
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@3.6.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: __sapper__/export/sapper
+          CLEAN: true
+
+# name: Build and Deploy
+# on:
+#   push:
+#     branches:
+#       - master
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Checkout
+#       uses: actions/checkout@v2
+#       with:
+#         persist-credentials: false
+
+#     - name: Use Node.js '12.x'
+#       uses: actions/setup-node@v1
+#       with:
+#         node-version: '12.x'
+#     - run: npm install
+#     - run: npm run export
+#     - name: Build and Deploy
+#       uses: JamesIves/github-pages-deploy-action@releases/v3
+#       with:
+#         ACCESS_TOKEN: ${{ secrets.github_pat }}
+#         BRANCH: gh-pages
+#         FOLDER: __sapper__/export/sapper
